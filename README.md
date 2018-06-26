@@ -1,0 +1,3 @@
+# GRO Aggregator
+
+This is a django project lead by Graduate Research Organizations for Biotechnology in New York (GRO Biotech for short) which aims to create an aggregator that indexes as many of the biotech events taking place in New York City as possible and sends weekly e-mails. Additionally the website will feature a form via which one can submit one's own biotech event to catch events that are not managed via services like eventbrite. 
