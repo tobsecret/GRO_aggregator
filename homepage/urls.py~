@@ -1,0 +1,8 @@
+from django.conf.urls import url
+from . import views
+
+urlpatterns = [
+    url(r'^$', views.index, name = 'index'),#Cannot just do '' cause all urls will fall under here
+    url(r'^contact/$', views.contact, name = 'contact'),  #This references the views file that points to basic.html which refers to the dictionary in the contact function in views
+    url(r'^signup/$', views.signup, name = 'signup') #This is the Newsletter signup form
+    ]

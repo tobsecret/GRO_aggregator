@@ -1,0 +1,49 @@
+{%extends "homepage/header.html" %}
+
+{% block content %}
+
+	{% for event in event_list %} <!--for each post in the object from the views.py file-->
+
+		<div class="row justify-content-around">
+			<div class = "col-md-3 offset-md-4">
+				<h2>{{event.title}}</h2>
+				<h6>on {{event.date}}</h6>
+				<h6>at {{event.address}}</h6>
+				<h4>{{event.body|safe|linebreaks}}</h4>
+				{{post.body|safe|linebreaks}} <!--safe allows html to be used in the text cause currently, the posts are coming from admin page. Remove safe when allowing other users to post; putting linebreak will allow linebreaks to show up-->
+			</div>
+			<div class = "col">
+				<link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
+				<style>
+					.map {
+						height: 200px;
+						width: 50%;
+					}
+				</style>
+				<script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
+				<title>Map</title>
+				<h2>{{event.address}}</h2>
+				<div id="map{{event.address}}" class="map"></div> <!--dont use event address, give a unique key for the map div id-->
+			</div>
+			<script type="text/javascript">
+				var map = new ol.Map({
+					target: 'map{{event.address}}',
+					layers: [
+						new ol.layer.Tile({
+							source: new ol.source.OSM()
+						})
+					],
+					view: new ol.View({
+						center: ol.proj.fromLonLat([-73.8436417, 40.8523342]),
+						zoom: 15
+					})
+				});
+			</script>
+		</div>
+		<br>
+
+	{% endfor %}
+
+    {#% include "personal/includes/htmlsnippet.html"%#} <!--remove the # to include html snippets-->
+
+{% endblock %}
