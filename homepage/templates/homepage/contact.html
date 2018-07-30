@@ -1,0 +1,14 @@
+{%extends "homepage/header.html" %}
+
+{% block content %}
+
+	{% for c in content %}
+
+		<!--{% if c == 'hi' %}
+			this is an if statement to do something
+		{% endif %} -->
+		<p>{{c}}</p> <!--This JINGA line goes through the hash and prints out all the values in that hash called c here which references content in the views file-->
+
+	{% endfor %} <!-- this logic is a for loop in JINGA, endfor closes the cor loop-->
+
+{% endblock %}
