@@ -18,27 +18,38 @@
 <nav class="navbar navbar-light" style="background-color: #42f48c;"> <!--dummy navbar to keep body in place-->
 	<a class="navbar-brand" href="/">GroBiotech</a>
 	<div class="btn-group" role="group" aria-label="Basic example">
-		<button type="button" class="btn btn-secondary" onclick="location.href = '/signup';">Newsletter sign-up</button>
+  		<button type="button" class="btn btn-secondary" onclick="location.href = '/create';">Submit Event</button>
 		<!--<button type="button" class="btn btn-secondary" data-toggle="popover" title="Sign-up" data-content="Email here">Newsletter sign-up</button>-->
-		<button type="button" class="btn btn-secondary">Login</button>
-
+		<button type="button" class="btn btn-secondary" onclick="location.href = '/login';">Login</button>
+		<button type="button" class="btn btn-secondary" onclick="location.href = '/signup';">Register</button>
 	</div>
+
+	<form class="logout-link" action="{% url 'gro_logout' %}" method="post">
+		{% csrf_token %}
+		<button class="btn btn-outline-secondary" type="submit">Logout</button>
+	</form>
 </nav>
 
 <nav class="navbar fixed-top navbar-light" style="background-color: #42f48c;"> <!--dummy navbar to keep body in place-->
 	<a class="navbar-brand" href="/">GroBiotech</a>
 	<div class="btn-group" role="group" aria-label="Basic example">
-  		<button type="button" class="btn btn-secondary" onclick="location.href = '/signup';">Newsletter sign-up</button>
+  		<button type="button" class="btn btn-secondary" onclick="location.href = '/create';">Submit Event</button>
 		<!--<button type="button" class="btn btn-secondary" data-toggle="popover" title="Sign-up" data-content="Email here">Newsletter sign-up</button>-->
-		<button type="button" class="btn btn-secondary">Login</button>
+		<button type="button" class="btn btn-secondary" onclick="location.href = '/login';">Login</button>
+		<button type="button" class="btn btn-secondary" onclick="location.href = '/signup';">Register</button>
 	</div>
+
+	<form class="logout-link" action="{% url 'gro_logout' %}" method="post">
+		{% csrf_token %}
+		<button class="btn btn-outline-secondary" type="submit">Logout</button>
+	</form>
 </nav>
 
 <body class="body" style="background-color:#f6f6f6">
 	<div class="container-fluid" style="min-height:95%; ">
-		<div class="col-sm-10">  
+		<div class="col">  
 			<div class='container-fluid'>
-				<br><br>
+				
 				<br><br>
 			   {% block content %}
 			   {% endblock %}	
@@ -65,3 +76,4 @@
 
 
 </html>
+
