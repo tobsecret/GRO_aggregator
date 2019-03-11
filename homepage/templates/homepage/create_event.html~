@@ -7,7 +7,7 @@
 		<h1>Register</h1>
 		{% csrf_token %} <!--makes sending data more secure-->
 		{{ form.as_p }} <!--write the form as paragraph-->
-		<button type"submit">Submit</button>
+		<button type"submit">Sign Up</button>
 	</div>
 </form>
 
