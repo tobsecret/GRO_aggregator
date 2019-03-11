@@ -12,13 +12,13 @@ class Event(models.Model):
     date = models.DateTimeField()
     address = models.CharField(max_length=140, validators=[RegexValidator(regex = '^[a-zA-Z0-9 .-]+$', message = 'Enter only letters or numbers')])
     address2 = models.CharField(max_length=140, blank=True)
-    city = models.CharField(max_length=140)
-    state = models.CharField(max_length=2)
+    city = models.CharField(max_length=140, default='')
+    state = models.CharField(max_length=2, default='')
     price = models.DecimalField(max_digits=6, decimal_places=2, blank = True, null = True)
     longitude = models.DecimalField(max_digits = 13, decimal_places = 10, blank = True, null = True, editable = False)
     latitude = models.DecimalField(max_digits = 13, decimal_places = 10, blank = True, null = True, editable = False)
     display = models.BooleanField(default=False, editable = False) ##checkbox value to show on homepage or not
-    submitter = models.CharField(max_length=140) ##allows admin to sort by User submitted events or scraped events 
+    submitter = models.CharField(max_length=140, default='') ##allows admin to sort by User submitted events or scraped events 
 
     class Meta:
         ordering = ["date"]
