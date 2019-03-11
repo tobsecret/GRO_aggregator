@@ -10,7 +10,7 @@ class Command(BaseCommand):
                 ##if timezone.now().day > LateEvents.date.day: ##only delete events that have passed for more than 1 day (keep 1 day events) ##this doesnt work comparing days
                 if timezone.now() > LateEvents.date: ##if todays datetime already passed an event's datetime
                         self.stdout.write(str(LateEvents.date))
-                        Event.objects.filter(date=LateEvents.date).remove()
+                        Event.objects.filter(date=LateEvents.date).delete()
 
 
 
