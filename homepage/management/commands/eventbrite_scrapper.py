@@ -1,3 +1,5 @@
+##this scrapper cannot scrap all the events; sometimes there is differences in the format of each page on eventbrite
+
 from django.core.management.base import BaseCommand, CommandError
 from homepage.models import Event
 import requests
@@ -13,6 +15,12 @@ possibleStreetNames = ["Road", "Way", "Street", "Avenue", "Boulevard" "Lane", "D
 def month_converter(month):
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     return months.index(month) + 1
+
+##possible div classes:
+	##Event names in search page:
+		##("div", {"class": "event-card__formatted-name--is-clamped"}) ##current one
+		##("div", {"class": "card-text--truncated__three"})
+
 
 class EventbriteObject:
 
@@ -41,11 +49,13 @@ for pageNumber in range(1, pages + 1): ##add 1 to pages to get the right number 
     Eventbrite_soup = BeautifulSoup(siteinfo.content, features="html.parser") ##make it readable-ish
 
     Event_divs = Eventbrite_soup.find_all("section", {"class": "eds-l-pad-all-6 eds-media-card-content eds-media-card-content--list eds-media-card-content--standard eds-media-card-content--fixed"}) ##this is the div that is unique for each event and not duplicated
-
+    
     for forLoopVar in Event_divs: ##go into each event div and pull out more specific info
         
-        Name_html = forLoopVar.find_all("div", {"class": "card-text--truncated__three"}) ##Name Of Event in div
+        Name_html = forLoopVar.find_all("div", {"class": "event-card__formatted-name--is-clamped"}) ##Name Of Event in div
+        ##this class may loop twice in the page?
         name = Name_html[0].text
+        print (name)
 
         Datetime_location_price_html = forLoopVar.find_all("div", {"class": "eds-text-bs--fixed eds-text-color--grey-600 eds-l-mar-top-1"})
         
@@ -63,9 +73,10 @@ for pageNumber in range(1, pages + 1): ##add 1 to pages to get the right number 
         specificEventLink = requests.get(link) ##open the eventbrite page for that event (mainly to get the event details)
         specificEvent_soup = BeautifulSoup(specificEventLink.content, features="html.parser")
         eventpagetype = specificEvent_soup.find_all("body", {"id": "page_eventview"}) ##There's a different type of pages for certain events called page_eventview; didn't have time to make this type of scrapper yet so just skip these
-        if len(eventpagetype) == 0: ##if len(eventpagetype) == 1, it means its the other event page, so just skip those for now
+        if len(eventpagetype) == 0: ##if len(eventpagetype) == 1, it means its the other event page type, so just skip those for now
 
             Body_html = specificEvent_soup.find_all("div", {"class": "js-xd-read-more-contents l-mar-top-3"})
+            ##print (Body_html)
             body_list = Body_html[0].text.rstrip().split("\n") ##split by newline characters in the body text
             body = ''
 

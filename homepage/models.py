@@ -34,6 +34,10 @@ class Event(models.Model):
             )
     view_link.short_description = 'Submitter'
     view_link.allow_tags = True
+    
+    def mapcallback(self):
+        callback = 'mapcallback' + str(self.id) ##this function allows leaflet to call individual functions to initiate the map, based on the event's id
+        return callback
 
     ##def Action(self): ##add a button to admin events page to select events for display
     ##    return format_html(
