@@ -1,44 +1,97 @@
 {%extends "homepage/header.html" %}
 
+{% load leaflet_tags %}
+
 {% block content %}
+
+{% leaflet_js %}
+{% leaflet_css %}
 
 	{% for event in event_list %} <!--for each post in the object from the views.py file-->
 
 		<div class="row justify-content-around">
-			<div class = "col-md-3 offset-md-4">
-				<h2>{{event.title}}</h2>
+			<div class = "col-xl-7"> <!--div class containing basic event info-->
+				<h2><a href={{event.link}}>{{event.title}}</a></h2>
 				<h6>on {{event.date}}</h6>
 				<h6>at {{event.address}}</h6>
+				<h6>{{event.address2}}</h6>
+				<h6>{{event.city}} {{event.state}}</h6>
 				<h4>{{event.body|safe|linebreaks}}</h4>
 				{{post.body|safe|linebreaks}} <!--safe allows html to be used in the text cause currently, the posts are coming from admin page. Remove safe when allowing other users to post; putting linebreak will allow linebreaks to show up-->
 			</div>
-			<div class = "col">
-				<link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
-				<style>
-					.map {
-						height: 200px;
-						width: 50%;
-					}
-				</style>
-				<script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
-				<title>Map</title>
-				<h2>{{event.address}}</h2>
-				<div id="map{{event.address}}" class="map"></div> <!--dont use event address, give a unique key for the map div id-->
+			<div class = "col  offset-sm-1"> <!--div class for the leaflet map api-->
+    			<style>
+        			.leaflet-container {
+            			position: relative;
+            			border: 1px solid black;
+            			border-radius: 8px;
+                        height: 200px;
+                    	width: 100%;
+                    }
+                </style>
+    			<title>Map{{event.id}}</title>
+    			<h2><a id="googledir{{event.id}}">{{event.address}}</a></h2> <!--add google maps direction to the link-->
+        		{% leaflet_map event.id callback=event.mapcallback %} <!-- initialize leaflet api-->
 			</div>
-			<script type="text/javascript">
-				var map = new ol.Map({
-					target: 'map{{event.address}}',
-					layers: [
-						new ol.layer.Tile({
-							source: new ol.source.OSM()
-						})
-					],
-					view: new ol.View({
-						center: ol.proj.fromLonLat([-73.8436417, 40.8523342]),
-						zoom: 15
-					})
-				});
-			</script>
+			<script type="text/javascript"> <!--this script adds the leaflet maps api to homepage-->
+                function map_init_basic (map, lat, lon) {
+                    L.marker([lat, lon]).addTo(map); <!-- Can use this marker tool to set up maps-->
+                    map.setView([lat, lon], 12); <!-- number on the right is the zoom -->
+                }
+                
+                {% for event in event_list %} <!--define a list of functions that callback will use-->
+                    function mapcallback{{event.id}} (map) {
+                        map_init_basic(map, "{{event.latitude}}", "{{event.longitude}}")
+                    }
+                {% endfor %}
+                
+            </script>
+            <script language="javascript" type="text/javascript"> <!--this script adds google direction link-->
+                (function() {
+                    var googlelink = 'https://www.google.com/maps/dir//{{event.address}},+{{event.city}},+{{event.state}}/@{{event.latitude}},{{event.longitude}}';
+                    googlelink = googlelink.replace(/\s+/g,"+");
+                    document.getElementById("googledir{{event.id}}").setAttribute("href",googlelink);
+                    })();
+            </script>
+            
+            <!--be careful making chunk comments (commenting out more than 1 line of code);
+            including the end comment '- ->' anywhere before the last chunk of code will 
+            allow parts of the code to be read; for example-->
+			
+			
+			<!-- Old Map using OSM -->
+			<!--
+			 <div class = "col  offset-sm-1">
+				<link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css"> 
+				<style> 
+					.map { 
+						height: 200px; 
+						width: 100%; 
+					} 
+				</style> 
+				<script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script> 
+				<title>Map</title> 
+				<h2>{{event.address}}</h2> 
+				<div id="map{{event.id}}" class="map"></div> <!--giving map div a unique id by event name and its date and its location--> 
+			<!-- need to include another <!-- here because '- ->' was used in the line above which ends the comment, even though there are two <!-- before it
+    		 </div> 
+			<script type="text/javascript"> 
+				var map = new ol.Map({ 
+					target: 'map{{event.id}}', 
+					layers: [ 
+						new ol.layer.Tile({ 
+							source: new ol.source.OSM() 
+						}) 
+					], 
+					view: new ol.View({ 
+						center: ol.proj.fromLonLat([{{event.longitude}}, {{event.latitude}}]), 
+						zoom: 13 
+					}) 
+				}); 
+			</script> 
+			-->
+			
+			
 		</div>
 		<br>
 

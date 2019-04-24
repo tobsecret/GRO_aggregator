@@ -1,0 +1,6 @@
+Django==2.1.5
+beautifulsoup4==4.6.3
+requests==2.20.1
+python-dotenv==0.9.1
+geocoder==1.38.1
+django-leaflet==0.24.0

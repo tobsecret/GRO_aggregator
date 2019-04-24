@@ -13,32 +13,34 @@
 		  height:100%
 		}
 	</style>
+	<link rel="shortcut icon" type="image/png" href="{% static '/images/homepage/GRO_tab-icon.png' %}" />
 </head>
 
-<nav class="navbar navbar-light" style="background-color: #42f48c;"> <!--dummy navbar to keep body in place-->
-	<a class="navbar-brand" href="/">GroBiotech</a>
-	<div class="btn-group" role="group" aria-label="Basic example">
-		<button type="button" class="btn btn-secondary" onclick="location.href = '/signup';">Newsletter sign-up</button>
-		<!--<button type="button" class="btn btn-secondary" data-toggle="popover" title="Sign-up" data-content="Email here">Newsletter sign-up</button>-->
-		<button type="button" class="btn btn-secondary">Login</button>
-
-	</div>
+<nav class="navbar navbar-light" style="background-color: #f0f0f0;"> <!--dummy navbar to keep body in place-->
 </nav>
 
-<nav class="navbar fixed-top navbar-light" style="background-color: #42f48c;"> <!--dummy navbar to keep body in place-->
-	<a class="navbar-brand" href="/">GroBiotech</a>
+<nav class="navbar fixed-top navbar-light" style="background-color: #f0f0f0;">
+	<a class="navbar-brand" href="/">
+		<img src= "{% static '/images/homepage/GROlogo_transparent.svg' %}" width="100" height="30" alt="GRO logo">
+  	</a>
 	<div class="btn-group" role="group" aria-label="Basic example">
-  		<button type="button" class="btn btn-secondary" onclick="location.href = '/signup';">Newsletter sign-up</button>
+  		<button type="button" class="btn btn-secondary" onclick="location.href = '/create';">Submit Event</button>
 		<!--<button type="button" class="btn btn-secondary" data-toggle="popover" title="Sign-up" data-content="Email here">Newsletter sign-up</button>-->
-		<button type="button" class="btn btn-secondary">Login</button>
+		<button type="button" class="btn btn-secondary" onclick="location.href = '/login';">Login</button>
+		<button type="button" class="btn btn-secondary" onclick="location.href = '/signup';">Register</button>
 	</div>
+
+	<form class="logout-link" action="{% url 'gro_logout' %}" method="post">
+		{% csrf_token %}
+		<button class="btn btn-outline-secondary" type="submit">Logout</button>
+	</form>
 </nav>
 
 <body class="body" style="background-color:#f6f6f6">
 	<div class="container-fluid" style="min-height:95%; ">
-		<div class="col-sm-10">  
+		<div class="col">  
 			<div class='container-fluid'>
-				<br><br>
+				
 				<br><br>
 			   {% block content %}
 			   {% endblock %}	
@@ -46,8 +48,8 @@
 		  </div>
 	</div> 
 	<footer>
-		<div class="container-fluid" style='margin-left:15px'>
-			<p><a href="/contact" target="blank">Contact</a> | <a href="/admin" target="blank">Admin Login</a></p>
+		<div class="container-fluid" style='margin-left:0px'> <!--Changing the margins may cause horizontal bar to appear-->
+			<p><a href="/contact" target="blank">Contact</a></p>
 		</div>
 	</footer>
 	
@@ -65,3 +67,4 @@
 
 
 </html>
+
