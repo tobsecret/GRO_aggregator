@@ -18,7 +18,8 @@ def month_converter(month):
 
 ##possible div classes:
 	##Event names in search page:
-		##("div", {"class": "event-card__formatted-name--is-clamped"}) ##current one
+        ##("div", {"class": "eds-event-card__formatted-name--is-clamped"}) ##current one
+		##("div", {"class": "event-card__formatted-name--is-clamped"})
 		##("div", {"class": "card-text--truncated__three"})
 
 
@@ -40,7 +41,7 @@ def hasNumbers(inputString):
     return any(char.isdigit() for char in inputString)
 
 Eventbrite_url = "https://www.eventbrite.com/d/ny--new-york/biotech/?page="
-pages = 1 ##number of pages on the above url to scrap
+pages = 10 ##number of pages on the above url to scrap
 
 for pageNumber in range(1, pages + 1): ##add 1 to pages to get the right number of pages 
 
@@ -52,7 +53,7 @@ for pageNumber in range(1, pages + 1): ##add 1 to pages to get the right number 
     
     for forLoopVar in Event_divs: ##go into each event div and pull out more specific info
         
-        Name_html = forLoopVar.find_all("div", {"class": "event-card__formatted-name--is-clamped"}) ##Name Of Event in div
+        Name_html = forLoopVar.find_all("div", {"class": "eds-event-card__formatted-name--is-clamped"}) ##Name Of Event in div
         ##this class may loop twice in the page?
         name = Name_html[0].text
         print (name)
@@ -64,9 +65,12 @@ for pageNumber in range(1, pages + 1): ##add 1 to pages to get the right number 
             price = 0
         elif "at" in price: ##if price says Free or says nothing, just leave as is, but if event is not free, split the string at " at " and just get the number to put in price
             price = price.split(" at ")[1]
-            price.replace(',', '') ##remove all commas in the price string
-            price = float(price[1:]) ##make the price into a float number; price[1:] removes the '$' sign
-
+            ##.replace removes all commas in the price string
+            
+            price = float(price.replace(',', '')[1:]) ##make the price into a float number; price[1:] removes the '$' sign
+            ##print(price)
+        else:
+            price = None
         Link_html = forLoopVar.find_all("a", {"tabindex": 0})
         link = Link_html[0].get("href")
 
@@ -76,6 +80,9 @@ for pageNumber in range(1, pages + 1): ##add 1 to pages to get the right number 
         if len(eventpagetype) == 0: ##if len(eventpagetype) == 1, it means its the other event page type, so just skip those for now
 
             Body_html = specificEvent_soup.find_all("div", {"class": "js-xd-read-more-contents l-mar-top-3"})
+            if not Body_html: ##skip to the next event if body_html cannot be found
+                print("Cannot find body")
+                continue
             ##print (Body_html)
             body_list = Body_html[0].text.rstrip().split("\n") ##split by newline characters in the body text
             body = ''
@@ -121,8 +128,17 @@ for pageNumber in range(1, pages + 1): ##add 1 to pages to get the right number 
                     if any(streetNames in yellowpages for streetNames in possibleStreetNames):
                         address = yellowpages
                         break ##leave loop when the correct address line is found
-            state = location_list[-4][-9:-7] ##get the 4th element from the back of the split array and then get the substring using reverse index to get the state
+            ##print(location_list[-4])
+            
             city = location_list[-4].split(",")[0] ##get the city by splittings the "City, State Zip code" line by comma
+            state = location_list[-4] ##use the zipcode if the address only contains the zip code
+            if len(location_list[-4]) > 6:
+                state = location_list[-4].split(", ")[1][0:-6] ##get the 2nd element of the split and grab the string of the first element to just before the zip code
+            ##state = location_list[-4][-9:-7] ##get the 4th element from the back of the split array and then get the substring using reverse index to get the state
+            ##if state.islower(): ##if the string of state is lower case (not a state), go into if statement
+            ##    state = " ".join(location_list[-4].split(" ")[1:-2]) ##split address string by spaces and get the middle to second to last elements
+                ##join the list into a string separated by space
+            ##print(state)
 
             PendingEventList.append(EventbriteObject(name, body, link, date_time, address, city, state, price)) ##add each event object into the pending event list
 
