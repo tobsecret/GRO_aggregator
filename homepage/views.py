@@ -15,7 +15,7 @@ class EventListView(ListView):
     template_name = 'homepage/home.html'
     context_object_name = 'event_list'
     ordering = ['date']
-    paginate_by = 2
+    paginate_by = 5
 
 def contact(request):
     contactsContent = {

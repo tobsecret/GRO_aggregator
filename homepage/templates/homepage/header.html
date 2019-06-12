@@ -37,7 +37,13 @@
 	<form class="logout-link" action="{% url 'gro_logout' %}" method="post">
     		{% csrf_token %}
     		{% if user.is_authenticated %}
+    		<div class="visible">
         		<button class="btn btn-outline-secondary" type="submit">Logout</button>
+        	</div>
+        	{% else %}
+        	<div class="invisible">
+            	<button class="btn btn-outline-secondary" type="submit">Logout</button>
+            </div>	
     		{% endif %}
     </form>
 	
