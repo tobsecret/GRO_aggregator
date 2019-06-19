@@ -100,7 +100,7 @@ for pageNumber in range(1, pages + 1): ##add 1 to pages to get the right number 
             datetime_list = Datetime_Location_html[0].text.rstrip().split(",")
             if len(datetime_list) == 1: ##skip to the next event if month cannot be found
                 print("Cannot get month")
-                continue
+                ##continue
             month = month_converter(datetime_list[1][1:4]) ##get the 2nd element in the array and just get the first 3 letters of the month
             
             date = datetime_list[1].split(" ")[2] ##get the 2nd element in the array for the date
