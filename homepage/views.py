@@ -85,7 +85,6 @@ def signup(request):
         form = SignUpForm()
         return render(request, 'homepage/signup_form.html', {'form': form, 'title': 'Sign Up'})
     
-    
 def gro_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
