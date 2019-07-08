@@ -40,9 +40,12 @@ class CalendarView(ListView):
         cal.setfirstweekday(6) ##set the first day of the week to Sunday
         # Call the formatmonth method, which returns our calendar as a table
         html_cal = cal.formatmonth(withyear=True)
-        context['calendar'] = mark_safe(html_cal)
-        context['prev_month'] = prev_month(d) ##uses the prev_month function defined below
-        context['next_month'] = next_month(d)
+        context = {
+                'calendar': mark_safe(html_cal),
+                'prev_month': prev_month(d), ##uses the prev_month function defined below
+                'next_month': next_month(d),
+                'title': "Calendar"
+        }
         return context
 
 def prev_month(d):
@@ -119,8 +122,8 @@ def create_event(request):
             form.create()
             print(form.submitter)
             return redirect('/')
-        return render(request, 'homepage/create_event.html', {'form':form, 'title': 'Create Event'})
+        return render(request, 'homepage/create_event.html', {'form':form, 'title': 'Submit Event'})
     else:
         form = CreateEvent()
-        return render(request, 'homepage/create_event.html', {'form':form, 'title': 'Create Event'})
+        return render(request, 'homepage/create_event.html', {'form':form, 'title': 'Submit Event'})
     

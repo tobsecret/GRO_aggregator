@@ -10,7 +10,23 @@ from pytz import timezone
 
 PendingEventList = []
 
-possibleStreetNames = ["Road", "Way", "Street", "Avenue", "Boulevard" "Lane", "Drive", "Terrace", "Place", "Court", "Rd", " St", "Str", "Ave", "Av", "Blvd", "Ln", "Dr", "Pl"]
+possibleStreetNames = ["Road", "Rd",
+                       "Way", "Wy",
+                       "Street", "Str", "St",
+                       "Avenue", "Ave", "Avn", "Av",
+                       "Boulevard", "Blvd", "Bl",
+                       "Lane", "Ln",
+                       "Drive", "Dr",
+                       "Terrace",
+                       "Place", "Pl",
+                       "Court", "Ct",
+                       "Pike",
+                       "Alley", "Aly",
+                       "Beach", "Bch",
+                       "Creek", "Crk",
+                       "Square", "Sqr", "Squ", "Sq",
+                       "Center", "Ctr"
+                       ]
 
 def month_converter(month):
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -126,7 +142,7 @@ for pageNumber in range(1, pages + 1): ##add 1 to pages to get the right number 
 
             location_list = Datetime_Location_html[1].text.rstrip().split("\n") ##split location by new line (splits the address, city, state, "View Map",etc)
             address = location_list[1] ##use the 1st line of the location as the address; however, this may not always list an actual address with building number and street name
-
+            print(location_list[2])
             for yellowpages in location_list: ##loops through the "address" provided by eventbrite and picks the line that contains a generic street name word like "Street" or "Avenue" and a building number
                 if hasNumbers(yellowpages):
                     if any(streetNames in yellowpages for streetNames in possibleStreetNames):

@@ -10,7 +10,7 @@ class Event(models.Model):
     body = models.TextField(blank=True)
     link = models.URLField(max_length=140, blank=True, null = True)
     date = models.DateTimeField()
-    address = models.CharField(max_length=140, validators=[RegexValidator(regex = '^[a-zA-Z0-9 .-]+$', message = 'Enter only letters or numbers')])
+    address = models.CharField(max_length=140, validators=[RegexValidator(regex = '^[a-zA-Z0-9 .-]+$', message = 'Enter only letters or numbers for address')])
     address2 = models.CharField(max_length=140, blank=True)
     city = models.CharField(max_length=140, default='')
     state = models.CharField(max_length=2, default='')
