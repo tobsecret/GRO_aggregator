@@ -123,7 +123,7 @@ def create_event(request):
             print(form.submitter)
             return redirect('/')
         return render(request, 'homepage/create_event.html', {'form':form, 'title': 'Submit Event'})
-    else:
+    else: ##go back to submit event page if event submission failed
         form = CreateEvent()
         return render(request, 'homepage/create_event.html', {'form':form, 'title': 'Submit Event'})
     

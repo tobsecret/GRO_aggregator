@@ -25,30 +25,37 @@
 </nav>
 
 <nav class="navbar fixed-top navbar-light" style="background-color: #f0f0f0;">
-	<a class="navbar-brand" href="/">
-		<img src= "{% static '/images/homepage/GROlogo_transparent.svg' %}" width="100" height="30" alt="GRO logo">
-  	</a>
-	<div class="btn-group" role="group" aria-label="Basic example">
-  		<button type="button" class="btn btn-secondary" onclick="location.href = '/create';">Submit Event</button>
-		<!--<button type="button" class="btn btn-secondary" data-toggle="popover" title="Sign-up" data-content="Email here">Newsletter sign-up</button>-->
-		<button type="button" class="btn btn-secondary" onclick="location.href = '/login';">Login</button>
-		<button type="button" class="btn btn-secondary" onclick="location.href = '/signup';">Register</button>
-		<button type="button" class="btn btn-secondary" onclick="location.href = '/calendar';">Calendar</button>
-	</div>
-
-	<form class="logout-link" action="{% url 'gro_logout' %}" method="post">
-    		{% csrf_token %}
-    		{% if user.is_authenticated %}
-    		<div class="visible">
-        		<button class="btn btn-outline-secondary" type="submit">Logout</button>
-        	</div>
-        	{% else %}
-        	<div class="invisible">
-            	<button class="btn btn-outline-secondary" type="submit">Logout</button>
-            </div>	
-    		{% endif %}
+    <div class="col">
+        <a class="navbar-brand" href="/">
+        	<img src= "{% static '/images/homepage/GROlogo_transparent.svg' %}" width="100" height="30" alt="GRO logo">
+        </a>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary" onclick="location.href = '/create';">Submit Event</button>
+        	<!--<button type="button" class="btn btn-secondary" data-toggle="popover" title="Sign-up" data-content="Email here">Newsletter sign-up</button>-->
+        	<button type="button" class="btn btn-secondary" onclick="location.href = '/login';">Login</button>
+        	<button type="button" class="btn btn-secondary" onclick="location.href = '/signup';">Register</button>
+        	<button type="button" class="btn btn-secondary" onclick="location.href = '/calendar';">Calendar</button>
+        </div>
+    </div>
+    <form class="logout-link" action="{% url 'gro_logout' %}" method="post">
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+            <div class="dropdown">
+                <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% if user.first_name %}
+                        Hello {{user.first_name}} {{user.last_name}}
+                    {% else %}
+                        Hello {{user.username}}
+                    {% endif %}
+                </button> 
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="/reset-password">Reset Password</a>
+                    <button class="dropdown-item" type="submit">Logout</a>
+                </div>
+            </div>
+        {% else %}
+        {% endif %}
     </form>
-	
 </nav>
 
 <body class="body" style="background-color:#f6f6f6">
