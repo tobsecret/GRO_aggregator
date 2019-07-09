@@ -20,8 +20,8 @@ class Event(models.Model):
     display = models.BooleanField(default=False, editable = False) ##checkbox value to show on homepage or not
     submitter = models.CharField(max_length=140, default='') ##allows admin to sort by User submitted events or scraped events 
 
-    ##class Meta:
-        ##ordering = ["date"]
+    class Meta:
+        ordering = ["date"]
 
     def view_link(self): ##allows link to be shown on the admin page
         if (self.link is "") or (self.link is None):

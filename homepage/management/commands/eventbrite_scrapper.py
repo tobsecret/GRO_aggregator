@@ -168,7 +168,7 @@ class Command(BaseCommand): ##need to add restriction for duplicate events
     def handle(self, *args, **options): ##what do these arguments mean?
         for EventObjects in PendingEventList:
             ##UTCtime = EventObjects.date_time.astimezone(pytz.utc) ##converts the datetime back to UTC
-            if len(Event.objects.filter(title = EventObjects.name, date = EventObjects.date_time, address = EventObjects.address)) < 1: ##search for events with the same name, time, and location in the database; if an event is found to contain the same name, time, and location, don't add it to the database; this does not work for admin - created events for some reason. the scrapper will add evenets of the same name, time, and location as an admin created one
+            if len(Event.objects.filter(title = EventObjects.name, date = EventObjects.date_time, address = EventObjects.address)) < 1: ##search for events with the same name, time, and location in the database; if an event is found to contain the same name, time, and location, don't add it to the database; this does not work for admin - created events for some reason. the scrapper will add events of the same name, time, and location as an admin created one
                 NewEvent = Event.objects.create(
                     title = EventObjects.name,
                     body = EventObjects.body,
@@ -180,7 +180,7 @@ class Command(BaseCommand): ##need to add restriction for duplicate events
                     price = EventObjects.price,
                     submitter = EventObjects.source
                 ) ##create events in django model based on the Event class written here
-                NewEvent.save() ##dont this we need this line. the create function might already save each object into the database
+                NewEvent.save() ##dont think we need this line. the create function might already save each object into the database
 
 
 

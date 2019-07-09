@@ -12,10 +12,11 @@ class Calendar(HTMLCalendar):
 	# formats a day as a td
 	# filter events by day
 	def formatday(self, day, events):
-		events_per_day = events.filter(date__day=day)
+		events_per_day = events.filter(date__day=day, display = True)
 		d = ''
 		for event in events_per_day:
-			d += f'<a href={event.link}><li>{event.title}</li></a>'
+			timesies = event.date.astimezone().strftime('%I:%M %p') ##need to ass astimezone() function to convert from UTC in the SqLite DB to timezone time
+			d += f'<a href={event.link}><li>{timesies} - {event.title}</li></a>'
 
 		if day != 0:
 			return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"

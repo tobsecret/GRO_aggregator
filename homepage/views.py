@@ -16,9 +16,10 @@ def index(request):
 
 class EventListView(ListView):
     model = Event
+    queryset = Event.objects.filter(display = True)
     template_name = 'homepage/home.html'
     context_object_name = 'event_list'
-    ordering = ['date']
+    ordering = ["date"] ##ordering = ["date", "date__hour"]
     paginate_by = 5
 
 def contact(request):
@@ -110,7 +111,8 @@ def gro_logout(request):
     if request.method == 'POST':
         logout(request)
         return redirect('/')
-
+    else:
+        return redirect('/')
 
 @login_required(login_url="/login/")
 def create_event(request):
