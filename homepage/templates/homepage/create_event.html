@@ -6,7 +6,7 @@
 	<div class="container fluid">
 		<h1>Register</h1>
 		{% csrf_token %} <!--makes sending data more secure-->
-		{{ form.as_p }} <!--write the form as paragraph-->
+		{{ form.as_ul }} <!--write the form as paragraph-->
 		<button type"submit">Submit</button>
 	</div>
 </form>
