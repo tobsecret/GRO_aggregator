@@ -4,6 +4,8 @@ from django.core.validators import RegexValidator ##a validator for the text fie
 from django.utils.html import format_html ##allow html format
 from django.utils import timezone
 from django.contrib import admin
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 
 class Event(models.Model):
     title = models.CharField(max_length=140)
@@ -63,3 +65,13 @@ class Event(models.Model):
             self.latitude = float(LatLng[0:1][0]) ##return the reversed coordinates in Longitude and Latitude format (for OSM Maps)
         super(Event, self).save(*args, **kwargs)
 
+class UserProfile(models.Model): ##defines a User model so Django can save User fields like organization and occupation
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
+    organization = models.CharField(max_length=50, default='')
+    occupation = models.CharField(max_length=50, default='')
+
+def create_profile(sender, **kwargs):
+    if kwargs['created']:
+        user_profile = UserProfile.objects.create(user=kwargs['instance'])
+    
+post_save.connect(create_profile, sender=User)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from homepage.models import Event
+from homepage.models import Event, UserProfile
 from django.utils.html import format_html
 
 class EventDisplays(admin.ModelAdmin): ##set what info to display on Events section
@@ -25,12 +25,12 @@ class EventDisplays(admin.ModelAdmin): ##set what info to display on Events sect
         self.message_user(request, "%s successfully removed." % message_bit) ##give message to user
     deupdate.short_description = "Remove selected events from display on Homepage"
 
-
-
-    
+class ProfileDisplays(admin.ModelAdmin): ##set what info to display on Profiles section
+    list_display = ('user', 'organization', 'occupation')
 
 
 admin.site.register(Event, EventDisplays) ##loads Event classes in models file into database
+admin.site.register(UserProfile, ProfileDisplays)
 
 admin.site.site_header= 'GRO Admin Superpowers'
 
