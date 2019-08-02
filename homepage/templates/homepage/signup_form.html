@@ -7,6 +7,11 @@
 		<h1>Register</h1>
 		{% csrf_token %} <!--makes sending data more secure-->
 		{{ form.as_p }} <!--write the form as paragraph-->
+		{{profile_form.as_p }}
+		<!--
+		<p>Organization: {{ profile_form.organization }}</p>
+		<p>Occupation: {{ profile_form.occupation }}</p>
+		-->
 		<button type"submit">Submit</button>
 	</div>
 </form>

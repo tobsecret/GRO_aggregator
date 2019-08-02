@@ -32,8 +32,8 @@
     </div>
     <div class="col-md-auto">
         <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-secondary" onclick="location.href = '/calendar';">Calendar</button>
-            <button type="button" class="btn btn-secondary" onclick="location.href = '/create';">Submit Event</button>
+            <button type="button" class="btn btn-secondary" onclick="location.href = '{% url "calendar" %}';">Calendar</button>
+            <button type="button" class="btn btn-secondary" onclick="location.href = '{% url "create_event" %}';">Submit Event</button>
         	<!--<button type="button" class="btn btn-secondary" data-toggle="popover" title="Sign-up" data-content="Email here">Newsletter sign-up</button>-->
         </div>
     </div>
@@ -50,7 +50,7 @@
                     {% endif %}
                 </button> 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="/reset-password">Reset Password</a>
+                    <a class="dropdown-item" href="{% url 'password_reset' %}">Reset Password</a>
                     <button class="dropdown-item" type="submit">Logout</a>
                 </div>
             </div>
@@ -74,8 +74,8 @@
                     <button type="submit" class="btn btn-primary">Login</button>
                 </form>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/reset-password">Forgot password?</a>
-                <a class="dropdown-item" href="/signup">New to GRO-Biotech? Sign up</a>
+                <a class="dropdown-item" href="{% url 'password_reset' %}">Forgot password?</a>
+                <a class="dropdown-item" href="{% url 'signup' %}">New to GRO-Biotech? Sign up</a>
             </div>
         </div>
     {% endif %}
@@ -95,7 +95,7 @@
 	</div> 
 	<footer>
 		<div class="container-fluid" style='margin-left:0px'> <!--Changing the margins may cause horizontal bar to appear-->
-			<p><a href="/contact" target="blank">Contact</a></p>
+			<p><a href="{% url 'contact' %}" target="blank">Contact</a></p>
 		</div>
 	</footer>
 	

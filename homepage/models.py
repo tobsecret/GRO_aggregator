@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Event(models.Model):
     title = models.CharField(max_length=140)
@@ -19,7 +20,7 @@ class Event(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2, blank = True, null = True)
     longitude = models.DecimalField(max_digits = 13, decimal_places = 10, blank = True, null = True, editable = False)
     latitude = models.DecimalField(max_digits = 13, decimal_places = 10, blank = True, null = True, editable = False)
-    display = models.BooleanField(default=False, editable = False) ##checkbox value to show on homepage or not
+    displayed = models.BooleanField(default=False, editable = False) ##checkbox value to show on homepage or not
     submitter = models.CharField(max_length=140, default='') ##allows admin to sort by User submitted events or scraped events 
 
     class Meta:
@@ -65,13 +66,22 @@ class Event(models.Model):
             self.latitude = float(LatLng[0:1][0]) ##return the reversed coordinates in Longitude and Latitude format (for OSM Maps)
         super(Event, self).save(*args, **kwargs)
 
-class UserProfile(models.Model): ##defines a User model so Django can save User fields like organization and occupation
-    user = models.OneToOneField(User, on_delete=models.PROTECT)
-    organization = models.CharField(max_length=50, default='')
-    occupation = models.CharField(max_length=50, default='')
-
-def create_profile(sender, **kwargs):
-    if kwargs['created']:
-        user_profile = UserProfile.objects.create(user=kwargs['instance'])
+class UserProfile(models.Model): ##defines a User model so Django can save User fields like organization and occupation; extends Django User model
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.EmailField(default='', blank=True)
+    first_name = models.CharField(max_length=50, default='', blank=True)
+    last_name = models.CharField(max_length=50, default='', blank=True)
+    organization = models.CharField(max_length=50, default='', blank=True)
+    occupation = models.CharField(max_length=50, default='', blank=True)
     
-post_save.connect(create_profile, sender=User)
+    def __str__(self):
+        return self.user.username
+    
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.userprofile.save()

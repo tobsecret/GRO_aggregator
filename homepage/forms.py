@@ -11,14 +11,13 @@ class SignUpForm(forms.ModelForm): ##inherit from forms.ModelForm (standard form
     password = forms.CharField(widget=forms.PasswordInput) #causes password field to be in ***
     email = forms.EmailField(required=True)
 
-
     class Meta: #meta data saying that this class will be a user class
         model = User
         fields = (  #what fields users will need
                 'email',
                 'password',
                 'first_name',
-                'last_name')
+                'last_name',)
 
     def save(self, commit=True):
         user = super(SignUpForm, self).save(commit=False) ##register as a ModelForm defined by Django
@@ -27,7 +26,6 @@ class SignUpForm(forms.ModelForm): ##inherit from forms.ModelForm (standard form
         password = self.cleaned_data['password']
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
-        
 
         if commit:
             user.set_password(password)
@@ -40,6 +38,11 @@ class SignUpForm(forms.ModelForm): ##inherit from forms.ModelForm (standard form
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('Email address is already registered')
         return email
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = models.UserProfile
+        fields = ('organization', 'occupation')
 
 class LoginForm(forms.ModelForm): ##inherit from forms.ModelForm (standard forms from Django)
     password = forms.CharField(widget=forms.PasswordInput) #causes password field to be in ***
@@ -68,12 +71,10 @@ class LoginForm(forms.ModelForm): ##inherit from forms.ModelForm (standard forms
         return nonHashPassword
         
 class CreateEvent(forms.ModelForm):
-
     submitter = forms.CharField(max_length=140,  widget = forms.HiddenInput(), required = False)
     date = forms.DateField(widget = forms.SelectDateWidget, initial=datetime.date.today())
     time = forms.TimeField(input_formats=['%I:%M %p'], widget=forms.TimeInput(format='%I:%M %p'), help_text = 'Format: Hour:Minute AM/PM')
     url = forms.URLField(max_length=200, widget=forms.TextInput, required = False)
-
 
     class Meta:
         model = models.Event
