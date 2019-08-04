@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, View ##allows listing of basic views
 from homepage.models import Event
 from django.contrib.auth import authenticate, login, logout
@@ -128,10 +128,14 @@ def create_event(request):
         if form.is_valid():
             form.submitter = request.user.username
             form.create()
-            print(form.submitter)
+            ##print(form.submitter)
             return redirect('/')
         return render(request, 'homepage/create_event.html', {'form':form, 'title': 'Submit Event'})
     else: ##go back to submit event page if event submission failed
         form = CreateEvent()
         return render(request, 'homepage/create_event.html', {'form':form, 'title': 'Submit Event'})
-    
+  
+@login_required(login_url="/login/")
+def delete_event(request, event_id):
+    event = get_object_or_404(Event, pk = event_id)
+    return render(request, 'homepage/delete_event.html', {'event': event})

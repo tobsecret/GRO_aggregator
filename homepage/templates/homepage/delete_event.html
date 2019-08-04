@@ -1,0 +1,24 @@
+{%extends "homepage/header.html" %}
+
+{% block content %}
+
+<h1>You made it here!</h1>
+
+{{event.submitter}}
+{{user}}
+if these two authors are the same, allow them to delete it. This is the are you sure page
+
+
+<form method="post">
+    {% csrf_token %} <!--makes sending data more secure-->
+	<div class="container fluid">
+		<h1>Delete Event</h1>
+		<h2>Are you sure you want to event "{{ event.title }}"?</h2>
+		<div class = "form-group">
+    		<button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
+    		<a class="btn btn-outline-secondary" href="/">Cancel</a>
+		</div>
+	</div>
+</form>
+
+{% endblock %}

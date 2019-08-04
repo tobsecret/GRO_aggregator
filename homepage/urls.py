@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.urls import path
 from . import views
 from django.contrib.auth.views import (
         PasswordResetView, PasswordResetDoneView,
@@ -24,5 +25,7 @@ urlpatterns = [
     url(r'^reset-password/complete/$',
         PasswordResetCompleteView.as_view(template_name = 'homepage/password_reset_complete.html'),
         name = 'password_reset_complete'),
+    ##path is a newer function compared to url(); url() maybe obselete in the future; url() takes more regex looking syntax like (?P<year>[0-9]+)
+    path('delete/<int:event_id>/', views.delete_event, name='delete-event'),
     ]
 
