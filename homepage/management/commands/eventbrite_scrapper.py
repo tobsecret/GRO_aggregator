@@ -33,6 +33,10 @@ def month_converter(month):
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     return months.index(month) + 1
 
+possibleBodyDivs = ["js-xd-read-more-contents l-mar-top-3", 
+                    "structured-content-rich-text structured-content__module l-align-left l-mar-vert-6 l-sm-mar-vert-4 text-body-medium",
+                    "g-group l-mar-bot-6 l-sm-mar-bot-4"]
+
 ##possible div classes:
 	##Event names in search page:
         ##("div", {"class": "eds-event-card__formatted-name--is-clamped"}) ##current one
@@ -95,12 +99,18 @@ for pageNumber in range(1, pages + 1): ##add 1 to pages to get the right number 
         specificEvent_soup = BeautifulSoup(specificEventLink.content, features="html.parser")
         eventpagetype = specificEvent_soup.find_all("body", {"id": "page_eventview"}) ##There's a different type of pages for certain events called page_eventview; didn't have time to make this type of scrapper yet so just skip these
         if len(eventpagetype) == 0: ##if len(eventpagetype) == 1, it means its the other event page type, so just skip those for now
-
-            Body_html = specificEvent_soup.find_all("div", {"class": "js-xd-read-more-contents l-mar-top-3"})
+            
+            Body_html = None
+            for div in possibleBodyDivs:
+                Body_html = specificEvent_soup.find_all("div", {"class": div})
+                if Body_html:
+                    body_list = Body_html[0].text.rstrip().split("\n")
+                    break ##break out of loop with the correct div
+                
             if not Body_html: ##skip to the next event if body_html cannot be found
                 print("Cannot find body")
-                continue
-            ##print (Body_html)
+                continue ##if no body is found at all, skip to next event without doing the rest of this for loop
+                
             body_list = Body_html[0].text.rstrip().split("\n") ##split by newline characters in the body text
             body = ''
 
@@ -118,6 +128,11 @@ for pageNumber in range(1, pages + 1): ##add 1 to pages to get the right number 
             if len(datetime_list) == 1: ##skip to the next event if month cannot be found
                 print("Cannot get month")
                 continue
+            
+            if (datetime_list[1][1].isnumeric()):
+                print("Need to accomodate different date format")
+                continue
+            
             month = month_converter(datetime_list[1][1:4]) ##get the 2nd element in the array and just get the first 3 letters of the month
             
             date = datetime_list[1].split(" ")[2] ##get the 2nd element in the array for the date

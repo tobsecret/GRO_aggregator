@@ -1,0 +1,3 @@
+python manage.py [name of python script]
+
+ex. python manage.py eventbrite_scrapper
