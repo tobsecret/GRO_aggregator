@@ -136,6 +136,12 @@ def create_event(request):
         return render(request, 'homepage/create_event.html', {'form':form, 'title': 'Submit Event'})
   
 @login_required(login_url="/login/")
-def delete_event(request, event_id):
+def delete_event(request, event_id): ##allow submitter of event to get to delete event page; if user is not the submitter for an event, redirect to homepage
     event = get_object_or_404(Event, pk = event_id)
-    return render(request, 'homepage/delete_event.html', {'event': event})
+    if request.user.username == event.submitter:
+        if request.method == 'POST':
+            event.delete()
+            return redirect('/')
+        return render(request, 'homepage/delete_event.html', {'event': event})
+    else:
+        return redirect('/')
