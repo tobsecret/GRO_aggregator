@@ -8,12 +8,32 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+possibleStreetNames = ["alley", "aly",
+                       "avenue", "ave", "avn", "av",
+                       "beach", "bch",
+                       "boulevard", "blvd", "bl",
+                       "broadway", "bdwy",
+                       "center", "ctr",
+                       "court", "ct",
+                       "creek", "crk",
+                       "drive", "dr",
+                       "lane", "ln",
+                       "pike", "pk",
+                       "place", "pl",
+                       "plaza", "plz",
+                       "road", "rd",
+                       "square", "sqr", "squ", "sq",
+                       "street", "str", "st",
+                       "terrace",
+                       "way", "wy"
+                       ]
+
 class Event(models.Model):
     title = models.CharField(max_length=140)
     body = models.TextField(blank=True)
     link = models.URLField(max_length=140, blank=True, null = True)
     date = models.DateTimeField()
-    address = models.CharField(max_length=140, validators=[RegexValidator(regex = '^[a-zA-Z0-9 .-]+$', message = 'Enter only letters or numbers for address')])
+    address = models.CharField(max_length=140, validators=[RegexValidator(regex = '^[a-zA-Z0-9 ,.-]+$', message = 'Enter only letters or numbers for address')])
     address2 = models.CharField(max_length=140, blank=True)
     city = models.CharField(max_length=140, default='')
     state = models.CharField(max_length=2, default='')
@@ -53,6 +73,18 @@ class Event(models.Model):
 
     def save(self, *args, **kwargs):
         LatLng = geocoder.osm(self.address + ", " + self.city + " " + self.state + " USA").latlng ##get latitude and longitude coordinates for NYC addresses
+        modAddress1 = self.address.replace('-', '').replace('.', '').replace(',', '') ##remove dashes, commas, and periods from address
+        modAddress2 = [ele.lower() for ele in modAddress1.split(" ")] ##get a list of the address elements in lower case
+        addressIndex = 0
+        separator = " "
+        for addressElement in modAddress2:
+            if addressElement in possibleStreetNames:
+                addressIndex = modAddress2.index(addressElement)
+                LatLng = geocoder.osm(separator.join(self.address.split(" ")[0:(addressIndex+1)]) + ", " + self.city + " " + self.state + " USA").latlng
+                break
+        
+        ##print(separator.join(self.address.split(" ")[0:(addressIndex+1)]), addressIndex)
+        
         if LatLng is None: ##if this address returns a None object (cause its nonsense)
             CityLatLng = geocoder.osm(self.city + ", " + self.state + " USA").latlng ##geocode the city
             if CityLatLng is not None:

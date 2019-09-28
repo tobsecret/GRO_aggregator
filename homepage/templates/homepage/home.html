@@ -19,7 +19,6 @@
 				<h4>{{event.body|safe|linebreaks}}</h4>
 				{{post.body|safe|linebreaks}} <!--safe allows html to be used in the text cause currently, the posts are coming from admin page. Remove safe when allowing other users to post; putting linebreak will allow linebreaks to show up-->
                 {% if user.username == event.submitter %}
-                    <h1>{{event.id}}</h1>
                     <a class="btn btn-danger" href="{% url 'delete-event' event.id %}">Delete</a>
                 {% endif %}
                

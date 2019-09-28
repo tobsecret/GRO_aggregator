@@ -1,7 +1,7 @@
 ##this scrapper cannot scrap all the events; sometimes there is differences in the format of each page on eventbrite
 
 from django.core.management.base import BaseCommand, CommandError
-from homepage.models import Event
+from homepage.models import Event, possibleStreetNames
 import requests
 from bs4 import BeautifulSoup
 import datetime
@@ -9,25 +9,6 @@ import pytz
 from pytz import timezone
 
 PendingEventList = []
-
-possibleStreetNames = ["Road", "Rd",
-                       "Way", "Wy",
-                       "Street", "Str", "St",
-                       "Avenue", "Ave", "Avn", "Av",
-                       "Broadway",
-                       "Boulevard", "Blvd", "Bl",
-                       "Lane", "Ln",
-                       "Drive", "Dr",
-                       "Terrace",
-                       "Place", "Pl",
-                       "Court", "Ct",
-                       "Pike",
-                       "Alley", "Aly",
-                       "Beach", "Bch",
-                       "Creek", "Crk",
-                       "Square", "Sqr", "Squ", "Sq",
-                       "Center", "Ctr"
-                       ]
 
 def month_converter(month):
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
