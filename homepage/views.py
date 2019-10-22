@@ -90,8 +90,8 @@ def signup(request):
                     return redirect('/')
         return render(request, 'homepage/signup_form.html', {'form': form, 'profile_form': profile_form, 'title': 'Sign Up'}) #return to blank form if form is not valid
     else:
-        form = SignUpForm(request.POST)
-        profile_form = ProfileForm(request.POST)
+        form = SignUpForm() ##form = SignUpForm(request.POST) <- this will call a null POST to the form
+        profile_form = ProfileForm()
         return render(request, 'homepage/signup_form.html', {'form': form, 'profile_form': profile_form, 'title': 'Sign Up'})
     
 def gro_login(request):

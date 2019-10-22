@@ -31,7 +31,7 @@ possibleStreetNames = ["alley", "aly",
 class Event(models.Model):
     title = models.CharField(max_length=140)
     body = models.TextField(blank=True)
-    link = models.URLField(max_length=140, blank=True, null = True)
+    link = models.URLField(max_length=500, blank=True, null = True)
     date = models.DateTimeField()
     address = models.CharField(max_length=140, validators=[RegexValidator(regex = '^[a-zA-Z0-9 ,.-]+$', message = 'Enter only letters or numbers for address')])
     address2 = models.CharField(max_length=140, blank=True)

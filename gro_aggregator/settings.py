@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'homepage',
     'leaflet',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -128,3 +129,5 @@ STATIC_URL = '/static/'
 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025 
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
